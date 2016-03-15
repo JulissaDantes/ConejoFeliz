@@ -8,16 +8,26 @@ var HelloWorldLayer = cc.Layer.extend({
         cc.log("x: "+ubic.x+" y: "+ubic.y);
         //AÑADIR MAS POSICIONES PARA EL CONEJO
         if(ubic.y<=170){
-            if(ubic.x>=236 && ubic.x<=380){
+            if(ubic.x>=236 && ubic.x<=350){
                 game.sprConejo.setPosition(300,96);
             }
-            if(ubic.x>=380 && ubic.x<=560){
-                game.sprConejo.setPosition(480,96);
+            if(ubic.x>=350 && ubic.x<=380){
+                game.sprConejo.setPosition(340,96);
             }
-            if(ubic.x>=560 && ubic.x<=719){
+            if(ubic.x>=380 && ubic.x<=412){
+                game.sprConejo.setPosition(400,96);
+            }
+            if(ubic.x>=412 && ubic.x<=526){
+                game.sprConejo.setPosition(460,96);
+            } 
+            if(ubic.x>=526 && ubic.x<=640){
+                game.sprConejo.setPosition(580,96);
+            }
+            if(ubic.x>=640 && ubic.x<=719){
                 game.sprConejo.setPosition(680,96);
 
             }
+
         }
     },
     ctor:function () {
@@ -37,7 +47,7 @@ var HelloWorldLayer = cc.Layer.extend({
         this.addChild(this.sprConejo, 1);
         
         //posicionando bombas
-
+/*
      for(var i = 0 ; i < 3 ; i++)
 	   {
         this.sprBomba = new cc.Sprite(res.bomba_png);
@@ -45,13 +55,31 @@ var HelloWorldLayer = cc.Layer.extend({
                {
                  this.sprBomba.setPosition( size.width / 2 +(i*100)-80,size.height / 2 + (i*36)+90);  
                }else{
-                   this.sprBomba.setPosition( size.width / 2 +(i*100),size.height / 2 + (i*36)+120);
+                   this.sprBomba.setPosition( size.width / 2 +(i*100)-10,size.height / 2 + (i*36)+120);
+                   
                }
         
         this.addChild(this.sprBomba, i);
-        this.sprBomba.runAction(cc.sequence(cc.moveBy(1, cc.p(0, -550))));
-        }
+           //ver si la bomba salio de la cosa
+
+               this.sprBomba.runAction(cc.sequence(cc.moveBy(6, cc.p(-10, -550)))); 
+
         
+        }*///Antiguo proceso de crear bombas
+        
+        //nuevo proceso motrenco
+        var sprB1 = new cc.Sprite(res.bomba_png);
+        sprB1.setPosition( 326,536);
+        this.addChild(sprB1);
+        sprB1.runAction(cc.sequence(cc.moveBy(6, cc.p(-10, -550))));
+        var sprB2 = new cc.Sprite(res.bomba_png);
+        sprB2.setPosition(477,474);
+        this.addChild(sprB2);
+        sprB2.runAction(cc.sequence(cc.moveBy(6, cc.p(-10, -550))));
+        var sprB3 = new cc.Sprite(res.bomba_png);
+        sprB3.setPosition(642,548);
+        this.addChild(sprB3);
+        sprB3.runAction(cc.sequence(cc.moveBy(6, cc.p(-10, -550))));
         
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -67,75 +95,6 @@ var HelloWorldLayer = cc.Layer.extend({
 
 var SPCollisionDetector = HelloWorldLayer.extend( {
 
-    ctor : function () {
-        this._super();
-        // cc.base(this);
-
-    },
-
-    // init physics
-    initPhysics : function() {
-        var staticBody = this.space.staticBody;
-
-        // Walls
-        var walls = [ new cp.SegmentShape( staticBody, cp.v(0,0), cp.v(winSize.width,0), 0 ),               // bottom
-                new cp.SegmentShape( staticBody, cp.v(0,winSize.height), cp.v(winSize.width,winSize.height), 0),    // top
-                new cp.SegmentShape( staticBody, cp.v(0,0), cp.v(0,winSize.height), 0),             // left
-                new cp.SegmentShape( staticBody, cp.v(winSize.width,0), cp.v(winSize.width,winSize.height), 0)  // right
-                ];
-        for( var i=0; i < walls.length; i++ ) {
-            var wall = walls[i];
-            wall.setElasticity(1);
-            wall.setFriction(1);
-            this.space.addStaticShape( wall );
-        }
-
-        // Gravity:
-        // testing properties
-        this.space.gravity = cp.v(0,-100);
-        this.space.iterations = 15;
-    },
-
-    createPhysicsSprite : function( pos, file, collision_type ) {
-        var body = new cp.Body(1, cp.momentForBox(1, 48, 108) );
-        body.setPos(pos);
-        this.space.addBody(body);
-        var shape = new cp.BoxShape( body, 48, 108);
-        shape.setElasticity( 0.5 );
-        shape.setFriction( 0.5 );
-        shape.setCollisionType( collision_type );
-        this.space.addShape( shape );
-
-        var sprite = new cc.PhysicsSprite(file);
-        sprite.setBody( body );
-        return sprite;
-    },
-
-    onEnter : function () {
-    
-       // cc.HelloWorldLayer(this, 'onEnter');//si explota documentar esto
-
-        this.initPhysics();
-        this.scheduleUpdate();
-
-        var sprite1 = this.createPhysicsSprite( cc.p(winSize.width/2, winSize.height-20), res.bomba_png, 1);
-        var sprite2 = this.createPhysicsSprite( cc.p(winSize.width/2, 50), res.conejo_png, 2);
-
-        this.addChild( sprite1 );
-        this.addChild( sprite2 );
-
-        this.space.addCollisionHandler( 1, 2,
-            this.collisionBegin.bind(this),
-            this.collisionPre.bind(this),
-            this.collisionPost.bind(this),
-            this.collisionSeparate.bind(this)
-            );
-    },
-
-
-    update : function( delta ) {
-        this.space.step( delta );
-    },
 
     collisionBegin : function ( arbiter, space ) {
 

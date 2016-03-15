@@ -2,6 +2,7 @@ var HelloWorldLayer = cc.Layer.extend({
     sprFondo:null,
     sprConejo:null,
     sprBomba:null,
+    
     moves: function(location,event){
         var game = event.getCurrentTarget();
         var ubic = location.getLocation();
@@ -80,6 +81,24 @@ var HelloWorldLayer = cc.Layer.extend({
         sprB3.setPosition(642,548);
         this.addChild(sprB3);
         sprB3.runAction(cc.sequence(cc.moveBy(6, cc.p(-10, -550))));
+        
+        var Z1 = new cc.Sprite(res.zanahoria_png);
+        Z1.setPosition( 386,507);
+        this.addChild(Z1);
+        Z1.runAction(cc.sequence(cc.moveBy(20, cc.p(-12, -550))));
+        var Z2 = new cc.Sprite(res.zanahoria_png);
+        Z2.setPosition(547,504);
+        this.addChild(Z2);
+        Z2.runAction(cc.sequence(cc.moveBy(16, cc.p(-10, -550))));
+        var Z3 = new cc.Sprite(res.zanahoria_png);
+        Z3.setPosition(687,599);
+        this.addChild(Z3);
+        Z3.runAction(cc.sequence(cc.moveBy(6, cc.p(-10, -550))));
+        
+        if((sprB1.getBoundingBox() == this.sprConejo.getBoundingBox() && sprB1.y == this.sprConejo.y)||(sprB2.x == this.sprConejo.x && sprB2.y == this.sprConejo.y)||(sprB3.x == this.sprConejo.x && sprB3.y == this.sprConejo.y))
+        {
+            cc.log("Colision");
+        }
         
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
